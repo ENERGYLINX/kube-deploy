@@ -1,0 +1,12 @@
+name: Unittesting
+
+on:
+- push
+
+jobs:
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v1
+    - name: unittests
+      run: |
+      sh test.sh

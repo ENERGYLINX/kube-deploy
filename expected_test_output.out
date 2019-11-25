@@ -1,0 +1,12 @@
+aws eks --region apptest update-kubeconfig --name kube-test
+helm install -n testnamespace --wait --timeout=500 --set a=b --set c=d -f values_xyz.yml apptest contrib/testchart
+aws eks --region apptest update-kubeconfig --name kube-test
+helm upgrade -n testnamespace -f values_xyz.yml --wait --timeout=500 --set a=b --set c=d apptest contrib/testchart
+aws eks --region apptest update-kubeconfig --name kube-test
+helm delete -n testnamespace apptest
+aws eks --region apptest update-kubeconfig --name kube-test
+helm install -n testnamespace --wait --timeout=500 --set a=b --set c=d -f values_xyz.yml apptest contrib/testchart
+aws eks --region apptest update-kubeconfig --name kube-test
+helm delete -n testnamespace apptest
+helm install -n testnamespace --wait --timeout=500 --set a=b --set c=d -f values_xyz.yml apptest contrib/testchart
+delete and replace flags can't be both enabled

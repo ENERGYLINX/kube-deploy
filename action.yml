@@ -1,0 +1,73 @@
+name: 'Kube deploy'
+description: 'This actions deploys helm chart into kube. It supports EKS cluster (AWS).'
+inputs:
+  release:
+    description: 'Name of the helm release'
+    required: true
+    default: ''
+  chart:
+    description: 'Path to the local chart or name of the remote chart'
+    required: true
+    default: 'contrib/helm'
+  values_file:
+    description: 'path to the values.yml file'
+    required: true
+    default: "values.yml"
+  aws_access_key:
+    description: 'AWS access key with EKS access'
+    required: true
+    default: ""
+  aws_secret_key:
+    description: 'AWS secret access key with EKS access'
+    required: true
+    default: ""
+  kube:
+    description: 'Name of the kube cluster'
+    required: true
+    default: ""
+  namespace:
+    description: 'Kubernetes namespace'
+    required: false
+    default: 'default'
+  replace:
+    description: '"yes" if you want to recrease the release'
+    required: false
+    default: 'no'
+  delete:
+    description: '"yes" if you want to just delete the release'
+    required: false
+    default: 'no'
+  set:
+    description: 'Pass --set parameters in this format: image.tag=test,version=v1'
+    required: false
+    default: ''
+  wait:
+    description: 'yes if you want to wait for all resources to start'
+    required: false
+    default: 'no'
+  timeout:
+    description: 'number of seconds for --timeout parameter'
+    required: false
+    default: '300'
+  region:
+    description: 'AWS region'
+    required: false
+    default: 'eu-west-1'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.chart }}
+    - ${{ inputs.values_file }}
+    - ${{ inputs.aws_access_key }}
+    - ${{ inputs.aws_secret_key }}
+    - ${{ inputs.kube }}
+    - ${{ inputs.replace }}
+    - ${{ inputs.delete }}
+    - ${{ inputs.set }}
+    - ${{ inputs.wait }}
+    - ${{ inputs.timeout }}
+    - ${{ inputs.release }}
+    - ${{ inputs.namespace }}
+    - ${{ inputs.region }}
+
