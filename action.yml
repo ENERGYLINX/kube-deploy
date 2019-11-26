@@ -6,12 +6,12 @@ inputs:
     required: true
     default: ''
   chart:
-    description: 'Path to the local chart or name of the remote chart'
-    required: true
+    description: 'Path to the local chart or name of the remote chart. Not required when delete is "yes".'
+    required: false
     default: 'contrib/helm'
   values_file:
     description: 'path to the values.yml file'
-    required: true
+    required: false
     default: "values.yml"
   aws_access_key:
     description: 'AWS access key with EKS access'

@@ -34,11 +34,11 @@ if [ -z "$INPUT_AWS_SECRET_KEY" ]; then
     >&2 echo "aws_secret_key is required"
     validation=1
 fi
-if [ -z "$INPUT_VALUES_FILE" ]; then
+if [ -z "$INPUT_VALUES_FILE" -a !"$INPUT_DELETE" = "yes" ]; then
     >&2 echo "values_file is required"
     validation=1
 fi
-if [ -z "$INPUT_CHART" ]; then
+if [ -z "$INPUT_CHART"  -a !"$INPUT_DELETE" = "yes" ]; then
     >&2 echo "chart is required"
     validation=1
 fi
@@ -78,6 +78,7 @@ if [ -n "$INPUT_SET"  ]; then
     extra_args="$extra_args --set"
     extra_args="$extra_args `echo $INPUT_SET | sed "s/,/ --set /"`"
 fi
+
 
 # Basic helm's calls
 helm_install() {
