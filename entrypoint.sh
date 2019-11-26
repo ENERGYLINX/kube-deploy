@@ -109,6 +109,7 @@ helm_delete() {
 
 # If the chart exists
 if [ `helm list -n $INPUT_NAMESPACE | grep $INPUT_CHART | wc -l` -gt 0 -o "$TEST_RELEASE_EXISTS" = "yes" ]; then
+    >&2 echo ".. existing release found"
     # And replace or delete flag is given, we delete the release
     if [ "$INPUT_DELETE" = "yes" -o "$INPUT_REPLACE" = "yes" ]; then
         helm_delete
@@ -116,13 +117,16 @@ if [ `helm list -n $INPUT_NAMESPACE | grep $INPUT_CHART | wc -l` -gt 0 -o "$TEST
 
     # If only replace flag is given we install the chart again
     if [ "$INPUT_REPLACE" = "yes" ]; then
+        >&2 echo ".. replacing"
         helm_install
     # and if replace and delete flags are "no" we just upgrade
     else
         if [ ! "$INPUT_DELETE" = "yes" ]; then
+            >&2 echo ".. upgrading"
             helm_upgrade
         fi
     fi
 else
+    >&2 echo ".. existing release not found"
     helm_install
 fi

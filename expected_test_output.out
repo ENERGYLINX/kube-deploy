@@ -1,28 +1,35 @@
 .. gettings EKS kube config
-aws eks --region apptest update-kubeconfig --name kube-test
+aws eks --region eu-west-x update-kubeconfig --name kube-test
 .. preparing extra arguments
+.. existing release not found
 .. helm install
 helm install -n testnamespace --wait --timeout=500 --set a=b --set c=d -f values_xyz.yml apptest contrib/testchart
 .. gettings EKS kube config
-aws eks --region apptest update-kubeconfig --name kube-test
+aws eks --region eu-west-x update-kubeconfig --name kube-test
 .. preparing extra arguments
+.. existing release found
+.. upgrading
 .. helm upgrade
 helm upgrade -n testnamespace -f values_xyz.yml --wait --timeout=500 --set a=b --set c=d apptest contrib/testchart
 .. gettings EKS kube config
-aws eks --region apptest update-kubeconfig --name kube-test
+aws eks --region eu-west-x update-kubeconfig --name kube-test
 .. preparing extra arguments
+.. existing release found
 .. helm delete
 helm delete -n testnamespace apptest
 .. gettings EKS kube config
-aws eks --region apptest update-kubeconfig --name kube-test
+aws eks --region eu-west-x update-kubeconfig --name kube-test
 .. preparing extra arguments
+.. existing release not found
 .. helm install
 helm install -n testnamespace --wait --timeout=500 --set a=b --set c=d -f values_xyz.yml apptest contrib/testchart
 .. gettings EKS kube config
-aws eks --region apptest update-kubeconfig --name kube-test
+aws eks --region eu-west-x update-kubeconfig --name kube-test
 .. preparing extra arguments
+.. existing release found
 .. helm delete
 helm delete -n testnamespace apptest
+.. replacing
 .. helm install
 helm install -n testnamespace --wait --timeout=500 --set a=b --set c=d -f values_xyz.yml apptest contrib/testchart
 delete and replace flags can't be both enabled
