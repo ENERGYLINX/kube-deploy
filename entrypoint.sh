@@ -1,7 +1,5 @@
 #!/bin/sh
 
-WORKSPACE=`pwd`
-
 # Input configuration and validation
 
 INPUT_RELEASE="${11}"
@@ -16,7 +14,7 @@ INPUT_DELETE="$7"
 INPUT_SET="$8"
 INPUT_WAIT="$9"
 INPUT_TIMEOUT="${10}"
-INPUT_REGION="${11}"
+INPUT_REGION="${13}"
 
 validation="0"
 
@@ -58,6 +56,7 @@ if [ "$validation" = "1" ]; then
 fi
 
 # We get the EKS config
+>&2 echo ".. gettings EKS kube config"
 export AWS_ACCESS_KEY_ID=$INPUT_AWS_ACCESS_KEY
 export AWS_SECRET_ACCESS_KEY=$INPUT_AWS_SECRET_KEY
 if [ "$TEST" = "yes" ]; then
@@ -67,6 +66,7 @@ else
 fi
 
 # Extra arguments added to the helm command
+>&2 echo ".. preparing extra arguments"
 extra_args=""
 if [ "$INPUT_WAIT" = "yes" ]; then
     extra_args="$extra_args --wait"
@@ -81,6 +81,7 @@ fi
 
 # Basic helm's calls
 helm_install() {
+    >&2 echo ".. helm install"
     if [ "$TEST" = "yes" ]; then
         echo helm install -n $INPUT_NAMESPACE $extra_args -f $INPUT_VALUES_FILE $INPUT_RELEASE $INPUT_CHART
     else
@@ -89,6 +90,7 @@ helm_install() {
 }
 
 helm_upgrade() {
+    >&2 echo ".. helm upgrade"
     if [ "$TEST" = "yes" ]; then
         echo helm upgrade -n $INPUT_NAMESPACE -f $INPUT_VALUES_FILE $extra_args $INPUT_RELEASE $INPUT_CHART
     else
@@ -97,6 +99,7 @@ helm_upgrade() {
 }
 
 helm_delete() {
+    >&2 echo ".. helm delete"
     if [ "$TEST" = "yes" ]; then
         echo helm delete -n $INPUT_NAMESPACE $INPUT_RELEASE
     else
