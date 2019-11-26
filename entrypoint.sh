@@ -108,7 +108,7 @@ helm_delete() {
 }
 
 # If the chart exists
-if [ `helm list -n $INPUT_NAMESPACE | grep $INPUT_CHART | wc -l` -gt 0 -o "$TEST_RELEASE_EXISTS" = "yes" ]; then
+if [ `helm list -n $INPUT_NAMESPACE | grep $INPUT_RELEASE | wc -l` -gt 0 -o "$TEST_RELEASE_EXISTS" = "yes" ]; then
     >&2 echo ".. existing release found"
     # And replace or delete flag is given, we delete the release
     if [ "$INPUT_DELETE" = "yes" -o "$INPUT_REPLACE" = "yes" ]; then
