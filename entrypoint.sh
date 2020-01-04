@@ -129,7 +129,7 @@ if [ `helm list -n $INPUT_NAMESPACE | grep $INPUT_RELEASE | wc -l` -gt 0 -o "$TE
     fi
 else
     >&2 echo ".. existing release not found"
-    if [ ! "$INPUT_DELETE" = "yes"; then
+    if [ ! "$INPUT_DELETE" = "yes" ]; then
         helm_install
     fi
 fi
