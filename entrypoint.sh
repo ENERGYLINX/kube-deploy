@@ -55,14 +55,19 @@ if [ "$validation" = "1" ]; then
     exit 1
 fi
 
+# Do nothing when helm is called during testing
+if [ "$TEST" = "yes" ]; then
+    alias helm="echo helm"
+fi
+
 # We get the EKS config
 >&2 echo ".. gettings EKS kube config"
 export AWS_ACCESS_KEY_ID=$INPUT_AWS_ACCESS_KEY
 export AWS_SECRET_ACCESS_KEY=$INPUT_AWS_SECRET_KEY
 if [ "$TEST" = "yes" ]; then
-    echo aws eks --region $INPUT_REGION update-kubeconfig --name $INPUT_KUBE
+    echo aws eks --region "$INPUT_REGION" update-kubeconfig --name "$INPUT_KUBE"
 else
-    aws eks --region $INPUT_REGION update-kubeconfig --name $INPUT_KUBE
+    aws eks --region "$INPUT_REGION" update-kubeconfig --name "$INPUT_KUBE"
 fi
 
 # Extra arguments added to the helm command
@@ -84,32 +89,32 @@ fi
 helm_install() {
     >&2 echo ".. helm install"
     if [ "$TEST" = "yes" ]; then
-        echo helm install -n $INPUT_NAMESPACE $extra_args -f $INPUT_VALUES_FILE $INPUT_RELEASE $INPUT_CHART
+        echo helm install -n "$INPUT_NAMESPACE" $extra_args -f "$INPUT_VALUES_FILE" "$INPUT_RELEASE" "$INPUT_CHART"
     else
-        helm install -n $INPUT_NAMESPACE $extra_args -f $INPUT_VALUES_FILE $INPUT_RELEASE $INPUT_CHART
+        helm install -n "$INPUT_NAMESPACE" $extra_args -f "$INPUT_VALUES_FILE" "$INPUT_RELEASE" "$INPUT_CHART"
     fi
 }
 
 helm_upgrade() {
     >&2 echo ".. helm upgrade"
     if [ "$TEST" = "yes" ]; then
-        echo helm upgrade -n $INPUT_NAMESPACE -f $INPUT_VALUES_FILE $extra_args $INPUT_RELEASE $INPUT_CHART
+        echo helm upgrade -n "$INPUT_NAMESPACE" -f "$INPUT_VALUES_FILE" $extra_args "$INPUT_RELEASE" "$INPUT_CHART"
     else
-        helm upgrade -n $INPUT_NAMESPACE -f $INPUT_VALUES_FILE $extra_args $INPUT_RELEASE $INPUT_CHART
+        helm upgrade -n "$INPUT_NAMESPACE" -f "$INPUT_VALUES_FILE" $extra_args "$INPUT_RELEASE" "$INPUT_CHART"
     fi
 }
 
 helm_delete() {
     >&2 echo ".. helm delete"
     if [ "$TEST" = "yes" ]; then
-        echo helm delete -n $INPUT_NAMESPACE $INPUT_RELEASE
+        echo helm delete -n "$INPUT_NAMESPACE" "$INPUT_RELEASE"
     else
-        helm delete -n $INPUT_NAMESPACE $INPUT_RELEASE
+        helm delete -n "$INPUT_NAMESPACE" "$INPUT_RELEASE"
     fi
 }
 
 # If the chart exists
-if [ `helm list -n $INPUT_NAMESPACE | grep $INPUT_RELEASE | wc -l` -gt 0 -o "$TEST_RELEASE_EXISTS" = "yes" ]; then
+if [ "$TEST_RELEASE_EXISTS" = "yes" -o `helm list -n "$INPUT_NAMESPACE" | grep "$INPUT_RELEASE" | wc -l` -gt 0 ]; then
     >&2 echo ".. existing release found"
     # And replace or delete flag is given, we delete the release
     if [ "$INPUT_DELETE" = "yes" -o "$INPUT_REPLACE" = "yes" ]; then

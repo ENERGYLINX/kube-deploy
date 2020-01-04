@@ -21,8 +21,6 @@ helm delete -n testnamespace apptest
 aws eks --region eu-west-x update-kubeconfig --name kube-test
 .. preparing extra arguments
 .. existing release not found
-.. helm install
-helm install -n testnamespace --wait --timeout=500 --set a=b --set c=d -f values_xyz.yml apptest contrib/testchart
 .. gettings EKS kube config
 aws eks --region eu-west-x update-kubeconfig --name kube-test
 .. preparing extra arguments
