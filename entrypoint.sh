@@ -15,6 +15,9 @@ INPUT_SET="$8"
 INPUT_WAIT="$9"
 INPUT_TIMEOUT="${10}"
 INPUT_REGION="${13}"
+INPUT_AZURE_USERNAME="${14}"
+INPUT_AZURE_PASSWORD="${15}"
+INPUT_AZURE_RESOURCE_GROUP="${16}"
 
 validation="0"
 
@@ -26,14 +29,35 @@ if [ -z "$INPUT_NAMESPACE" ]; then
     >&2 echo "namespace is required"
     validation=1
 fi
-if [ -z "$INPUT_AWS_ACCESS_KEY" ]; then
-    >&2 echo "aws_access_key is required"
+
+if [ -n "$INPUT_AZURE_USERNAME" -a -n "$INPUT_AWS_ACCESS_KEY"  ]; then
+    >&2 echo "aws_access_key and azure_username cannot be passed same time"
     validation=1
 fi
-if [ -z "$INPUT_AWS_SECRET_KEY" ]; then
+
+if [ -z "$INPUT_AZURE_USERNAME" -a -z "$INPUT_AWS_ACCESS_KEY"  ]; then
+    >&2 echo "one of aws_access_key or azure_username has to be passed"
+    validation=1
+fi
+
+if [ -n "$INPUT_AWS_ACCESS_KEY" -a -z "$INPUT_AWS_SECRET_KEY" ]; then
     >&2 echo "aws_secret_key is required"
     validation=1
 fi
+
+if [ -n "$INPUT_AZURE_USERNAME" -a -z "$INPUT_AZURE_PASSWORD" ]; then
+    >&2 echo "azure_password is required"
+    validation=1
+fi
+
+if [ -n "$INPUT_AZURE_USERNAME" -a -z "$INPUT_AZURE_RESOURCE_GROUP" ]; then
+    >&2 echo "azure_resource_group is required"
+    validation=1
+fi
+
+
+
+
 if [ -z "$INPUT_VALUES_FILE" -a !"$INPUT_DELETE" = "yes" ]; then
     >&2 echo "values_file is required"
     validation=1
@@ -61,13 +85,27 @@ if [ "$TEST" = "yes" ]; then
 fi
 
 # We get the EKS config
->&2 echo ".. gettings EKS kube config"
-export AWS_ACCESS_KEY_ID=$INPUT_AWS_ACCESS_KEY
-export AWS_SECRET_ACCESS_KEY=$INPUT_AWS_SECRET_KEY
-if [ "$TEST" = "yes" ]; then
-    echo aws eks --region "$INPUT_REGION" update-kubeconfig --name "$INPUT_KUBE"
-else
-    aws eks --region "$INPUT_REGION" update-kubeconfig --name "$INPUT_KUBE"
+if [ -n "$INPUT_AWS_ACCESS_KEY" ]; then
+    >&2 echo ".. gettings EKS kube config"
+    export AWS_ACCESS_KEY_ID=$INPUT_AWS_ACCESS_KEY
+    export AWS_SECRET_ACCESS_KEY=$INPUT_AWS_SECRET_KEY
+    if [ "$TEST" = "yes" ]; then
+        echo aws eks --region "$INPUT_REGION" update-kubeconfig --name "$INPUT_KUBE"
+    else
+        aws eks --region "$INPUT_REGION" update-kubeconfig --name "$INPUT_KUBE"
+    fi
+fi
+
+# Or Azure AKS config
+if [ -n "$INPUT_AZURE_USERNAME" ]; then
+    >&2 echo ".. gettings Azure kube config"
+    if [ "$TEST" = "yes" ]; then
+        echo az login -u "$INPUT_AZURE_USERNAME" -p "******"
+        echo aks get-credentials --resource-group "$INPUT_AZURE_RESOURCE_GROUP" --name "$INPUT_KUBE"
+    else
+        az login -u "$INPUT_AZURE_USERNAME" -p "$INPUT_AZURE_PASSWORD"
+        aks get-credentials --resource-group "$INPUT_AZURE_RESOURCE_GROUP" --name "$INPUT_KUBE"
+    fi
 fi
 
 # Extra arguments added to the helm command

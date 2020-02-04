@@ -26,6 +26,10 @@ export TEST_RELEASE_EXISTS=yes
 
 ./entrypoint.sh "contrib/testchart" "values_xyz.yml" "XXX" "YYY" "kube-test" "yes" "yes" "a=b,c=d" "yes" "500" "apptest" "testnamespace" "eu-west-x" &>> $TEST_OUTPUT
 
+# Azure tests
+./entrypoint.sh "contrib/testchart" "values_xyz.yml" "XXX" "YYY" "kube-test" "yes" "yes" "a=b,c=d" "yes" "500" "apptest" "testnamespace" "eu-west-x" "XXXX" "YYYY" "ZZZZ" &>> $TEST_OUTPUT
+./entrypoint.sh "contrib/testchart" "values_xyz.yml" "" "" "kube-test" "yes" "no" "a=b,c=d" "yes" "500" "apptest" "testnamespace" "" "XXXX" "YYYY" "ZZZZ" &>> $TEST_OUTPUT
+
 line_number=1
 while IFS= read -r line_a
 do

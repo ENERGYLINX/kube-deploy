@@ -15,11 +15,11 @@ inputs:
     default: "values.yml"
   aws_access_key:
     description: 'AWS access key with EKS access'
-    required: true
+    required: false
     default: ""
   aws_secret_key:
     description: 'AWS secret access key with EKS access'
-    required: true
+    required: false
     default: ""
   kube:
     description: 'Name of the kube cluster'
@@ -53,6 +53,18 @@ inputs:
     description: 'AWS region'
     required: false
     default: 'eu-west-1'
+  azure_username:
+    description: 'Username for a valid Azure account'
+    required: false
+    default: ""
+  azure_password:
+    description: 'Password for the Azure username'
+    required: false
+    default: ""
+  azure_resource_group:
+    description: 'Resource group'
+    required: false
+    default: ""
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -70,4 +82,7 @@ runs:
     - ${{ inputs.release }}
     - ${{ inputs.namespace }}
     - ${{ inputs.region }}
+    - ${{ inputs.azure_username }}
+    - ${{ inputs.azure_password }}
+    - ${{ inputs.azure_resource_group }}
 

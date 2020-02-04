@@ -7,6 +7,7 @@ ENV KUBE_LATEST_VERSION="v1.16.2"
 # Note: Latest version of helm may be found at:
 # https://github.com/kubernetes/helm/releases
 ENV HELM_VERSION="v3.0.0"
+ENV AZURE_CLI_VERSION 2.0.81
 
 # General deps
 RUN apk update && \
@@ -27,6 +28,13 @@ RUN curl -o /usr/local/bin/aws-iam-authenticator https://amazon-eks.s3-us-west-2
 
 # awscli
 RUN pip3 install awscli
+
+# azure-cli
+RUN apk add --no-cache curl tar openssl sudo bash jq
+RUN apk --update --no-cache add postgresql-client postgresql
+RUN apk add py-pip && \
+    apk add --virtual=build gcc libffi-dev musl-dev openssl-dev python-dev make
+RUN pip --no-cache-dir install azure-cli==${AZURE_CLI_VERSION}
 
 # Copies your code file from your action repository to the filesystem path `/` of the container
 COPY entrypoint.sh /entrypoint.sh
