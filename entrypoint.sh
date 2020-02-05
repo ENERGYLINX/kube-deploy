@@ -101,10 +101,10 @@ if [ -n "$INPUT_AZURE_USERNAME" ]; then
     >&2 echo ".. gettings Azure kube config"
     if [ "$TEST" = "yes" ]; then
         echo az login -u "$INPUT_AZURE_USERNAME" -p "******"
-        echo aks get-credentials --resource-group "$INPUT_AZURE_RESOURCE_GROUP" --name "$INPUT_KUBE"
+        echo az aks get-credentials --resource-group "$INPUT_AZURE_RESOURCE_GROUP" --name "$INPUT_KUBE"
     else
         az login -u "$INPUT_AZURE_USERNAME" -p "$INPUT_AZURE_PASSWORD"
-        aks get-credentials --resource-group "$INPUT_AZURE_RESOURCE_GROUP" --name "$INPUT_KUBE"
+        az aks get-credentials --resource-group "$INPUT_AZURE_RESOURCE_GROUP" --name "$INPUT_KUBE"
     fi
 fi
 

@@ -35,7 +35,7 @@ aws_access_key and azure_username cannot be passed same time
 delete and replace flags can't be both enabled
 .. gettings Azure kube config
 az login -u XXXX -p ******
-aks get-credentials --resource-group ZZZZ --name kube-test
+az aks get-credentials --resource-group ZZZZ --name kube-test
 .. preparing extra arguments
 .. existing release found
 .. helm delete
