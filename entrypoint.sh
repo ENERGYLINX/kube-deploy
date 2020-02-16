@@ -18,6 +18,7 @@ INPUT_REGION="${13}"
 INPUT_AZURE_USERNAME="${14}"
 INPUT_AZURE_PASSWORD="${15}"
 INPUT_AZURE_RESOURCE_GROUP="${16}"
+INPUT_ATOMIC="${17}"
 
 validation="0"
 
@@ -120,6 +121,9 @@ fi
 if [ -n "$INPUT_SET"  ]; then
     extra_args="$extra_args --set"
     extra_args="$extra_args `echo $INPUT_SET | sed "s/,/ --set /"`"
+fi
+if [ "$INPUT_ATOMIC" = "yes" ]; then
+    extra_args="$extra_args --atomic"
 fi
 
 
