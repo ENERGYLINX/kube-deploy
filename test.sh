@@ -6,29 +6,33 @@ EXPECTED_TEST_OUTPUT=expected_test_output.out
 export TEST=yes
 export TEST_RELEASE_EXISTS=no
 
-./entrypoint.sh "contrib/testchart" "values_xyz.yml" "XXX" "YYY" "kube-test" "no" "no" "a=b,c=d" "yes" "500" "apptest" "testnamespace" "eu-west-x" &> $TEST_OUTPUT
+./entrypoint.sh "contrib/testchart1" "values_xyz.yml" "XXX" "YYY" "kube-test" "no" "no" "a=b,c=d" "yes" "500" "apptest" "testnamespace" "eu-west-x" &> $TEST_OUTPUT
 
 export TEST_RELEASE_EXISTS=yes
 
-./entrypoint.sh "contrib/testchart" "values_xyz.yml" "XXX" "YYY" "kube-test" "no" "no" "a=b,c=d" "yes" "500" "apptest" "testnamespace" "eu-west-x" &>> $TEST_OUTPUT
+./entrypoint.sh "contrib/testchart2" "values_xyz.yml" "XXX" "YYY" "kube-test" "no" "no" "a=b,c=d" "yes" "500" "apptest" "testnamespace" "eu-west-x" &>> $TEST_OUTPUT
 
 export TEST_RELEASE_EXISTS=yes
 
-./entrypoint.sh "contrib/testchart" "values_xyz.yml" "XXX" "YYY" "kube-test" "no" "yes" "a=b,c=d" "yes" "500" "apptest" "testnamespace" "eu-west-x" &>> $TEST_OUTPUT
+./entrypoint.sh "contrib/testchart3" "values_xyz.yml" "XXX" "YYY" "kube-test" "no" "yes" "a=b,c=d" "yes" "500" "apptest" "testnamespace" "eu-west-x" &>> $TEST_OUTPUT
 
 export TEST_RELEASE_EXISTS=no
 
-./entrypoint.sh "contrib/testchart" "values_xyz.yml" "XXX" "YYY" "kube-test" "no" "yes" "a=b,c=d" "yes" "500" "apptest" "testnamespace" "eu-west-x" &>> $TEST_OUTPUT
+./entrypoint.sh "contrib/testchart4" "values_xyz.yml" "XXX" "YYY" "kube-test" "no" "yes" "a=b,c=d" "yes" "500" "apptest" "testnamespace" "eu-west-x" &>> $TEST_OUTPUT
 
 export TEST_RELEASE_EXISTS=yes
 
-./entrypoint.sh "contrib/testchart" "values_xyz.yml" "XXX" "YYY" "kube-test" "yes" "no" "a=b,c=d" "yes" "500" "apptest" "testnamespace" "eu-west-x" &>> $TEST_OUTPUT
+./entrypoint.sh "contrib/testchart5" "values_xyz.yml" "XXX" "YYY" "kube-test" "yes" "no" "a=b,c=d" "yes" "500" "apptest" "testnamespace" "eu-west-x" &>> $TEST_OUTPUT
 
-./entrypoint.sh "contrib/testchart" "values_xyz.yml" "XXX" "YYY" "kube-test" "yes" "yes" "a=b,c=d" "yes" "500" "apptest" "testnamespace" "eu-west-x" &>> $TEST_OUTPUT
+./entrypoint.sh "contrib/testchart6" "values_xyz.yml" "XXX" "YYY" "kube-test" "yes" "yes" "a=b,c=d" "yes" "500" "apptest" "testnamespace" "eu-west-x" &>> $TEST_OUTPUT
 
 # Azure tests
-./entrypoint.sh "contrib/testchart" "values_xyz.yml" "XXX" "YYY" "kube-test" "yes" "yes" "a=b,c=d" "yes" "500" "apptest" "testnamespace" "eu-west-x" "XXXX" "YYYY" "ZZZZ" &>> $TEST_OUTPUT
-./entrypoint.sh "contrib/testchart" "values_xyz.yml" "" "" "kube-test" "yes" "no" "a=b,c=d" "yes" "500" "apptest" "testnamespace" "" "XXXX" "YYYY" "ZZZZ" &>> $TEST_OUTPUT
+./entrypoint.sh "contrib/testchart7" "values_xyz.yml" "XXX" "YYY" "kube-test" "yes" "yes" "a=b,c=d" "yes" "500" "apptest" "testnamespace" "eu-west-x" "XXXX" "YYYY" "ZZZZ" &>> $TEST_OUTPUT
+./entrypoint.sh "contrib/testchart8" "values_xyz.yml" "" "" "kube-test" "yes" "no" "a=b,c=d" "yes" "500" "apptest" "testnamespace" "" "XXXX" "YYYY" "ZZZZ" &>> $TEST_OUTPUT
+
+# Atomic
+export TEST_RELEASE_EXISTS=no
+./entrypoint.sh "contrib/testchart9" "values_xyz.yml" "XXX" "YYY" "kube-test" "no" "no" "a=b,c=daaa" "yes" "500" "apptest" "testnamespace" "eu-west-x" "" "" "" "yes" &>> $TEST_OUTPUT
 
 line_number=1
 while IFS= read -r line_a

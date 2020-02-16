@@ -3,14 +3,14 @@ aws eks --region eu-west-x update-kubeconfig --name kube-test
 .. preparing extra arguments
 .. existing release not found
 .. helm install
-helm install -n testnamespace --wait --timeout=500 --set a=b --set c=d -f values_xyz.yml apptest contrib/testchart
+helm install -n testnamespace --wait --timeout=500 --set a=b --set c=d -f values_xyz.yml apptest contrib/testchart1
 .. gettings EKS kube config
 aws eks --region eu-west-x update-kubeconfig --name kube-test
 .. preparing extra arguments
 .. existing release found
 .. upgrading
 .. helm upgrade
-helm upgrade -n testnamespace -f values_xyz.yml --wait --timeout=500 --set a=b --set c=d apptest contrib/testchart
+helm upgrade -n testnamespace -f values_xyz.yml --wait --timeout=500 --set a=b --set c=d apptest contrib/testchart2
 .. gettings EKS kube config
 aws eks --region eu-west-x update-kubeconfig --name kube-test
 .. preparing extra arguments
@@ -29,7 +29,7 @@ aws eks --region eu-west-x update-kubeconfig --name kube-test
 helm delete -n testnamespace apptest
 .. replacing
 .. helm install
-helm install -n testnamespace --wait --timeout=500 --set a=b --set c=d -f values_xyz.yml apptest contrib/testchart
+helm install -n testnamespace --wait --timeout=500 --set a=b --set c=d -f values_xyz.yml apptest contrib/testchart5
 delete and replace flags can't be both enabled
 aws_access_key and azure_username cannot be passed same time
 delete and replace flags can't be both enabled
@@ -42,4 +42,10 @@ az aks get-credentials --resource-group ZZZZ --name kube-test
 helm delete -n testnamespace apptest
 .. replacing
 .. helm install
-helm install -n testnamespace --wait --timeout=500 --set a=b --set c=d -f values_xyz.yml apptest contrib/testchart
+helm install -n testnamespace --wait --timeout=500 --set a=b --set c=d -f values_xyz.yml apptest contrib/testchart8
+.. gettings EKS kube config
+aws eks --region eu-west-x update-kubeconfig --name kube-test
+.. preparing extra arguments
+.. existing release not found
+.. helm install
+helm install -n testnamespace --wait --timeout=500 --set a=b --set c=daaa --atomic -f values_xyz.yml apptest contrib/testchart9

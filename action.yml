@@ -65,6 +65,10 @@ inputs:
     description: 'Resource group'
     required: false
     default: ""
+  atomic:
+    description: 'Remove resources in case the deployment fails'
+    required: false
+    default: "yes"
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -85,4 +89,5 @@ runs:
     - ${{ inputs.azure_username }}
     - ${{ inputs.azure_password }}
     - ${{ inputs.azure_resource_group }}
+    - ${{ inputs.atomic }}
 
