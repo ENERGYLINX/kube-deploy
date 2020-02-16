@@ -26,6 +26,7 @@ jobs:
         namespace: 'appname'
         chart: 'contrib/helm/'
         values_file: 'values.yml'
+        atomic: 'yes'
         aws_access_key: 'XXXX'
         aws_secret_key: 'XXXX'
         region: 'eu-west-1'
@@ -51,6 +52,7 @@ jobs:
       with:
         release: 'appname-sandbox'
         namespace: 'appname'
+        atomic: 'yes'
         azure_username: 'XXXX'
         azure_password: 'XXXX'
         azure_resource_group: 'XXXX'
